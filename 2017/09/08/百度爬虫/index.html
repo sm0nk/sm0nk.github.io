@@ -30,6 +30,21 @@
   
   <link rel="stylesheet" href="/css/style.css">
   
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
   
 
   <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
@@ -74,6 +89,11 @@
 						</div>
 						
 						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
 					</div>
 					
 				</div>
@@ -85,6 +105,8 @@
 						
 						<li>友情链接</li>
 						
+						
+						<li>关于我</li>
 						
 					</ul>
 				</div>
@@ -134,6 +156,12 @@
 				</section>
 				
 
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">true</div>
+				</section>
 				
 			</div>
 		</div>
