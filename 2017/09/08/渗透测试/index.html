@@ -9,18 +9,21 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="渗透测试框架图">
+  <meta name="description" content="渗透测试框架图&amp;amp;黑盒漏洞功能点挖洞 渗透框架图如下">
 <meta name="keywords" content="pentest">
 <meta property="og:type" content="article">
 <meta property="og:title" content="渗透测试">
 <meta property="og:url" content="http://yoursite.com/2017/09/08/渗透测试/index.html">
 <meta property="og:site_name" content="sm0nk&#39;s blog">
-<meta property="og:description" content="渗透测试框架图">
+<meta property="og:description" content="渗透测试框架图&amp;amp;黑盒漏洞功能点挖洞 渗透框架图如下">
 <meta property="og:image" content="http://yoursite.com/2017/09/08/渗透测试/pentest.png">
-<meta property="og:updated_time" content="2017-10-18T02:11:49.391Z">
+<meta property="og:image" content="http://yoursite.com/2017/09/08/渗透测试/totalrev.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/08/渗透测试/part1.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/08/渗透测试/part2.png">
+<meta property="og:updated_time" content="2017-10-18T03:01:15.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="渗透测试">
-<meta name="twitter:description" content="渗透测试框架图">
+<meta name="twitter:description" content="渗透测试框架图&amp;amp;黑盒漏洞功能点挖洞 渗透框架图如下">
 <meta name="twitter:image" content="http://yoursite.com/2017/09/08/渗透测试/pentest.png">
   
     <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
@@ -222,7 +225,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>渗透测试框架图<br><a id="more"></a><br><img src="pentest.png" alt=""></p>
+        <p>渗透测试框架图&amp;黑盒漏洞功能点挖洞</p>
+<p>渗透框架图如下<br><a id="more"></a><br><img src="pentest.png" alt=""></p>
+<p>黑盒渗透功能点维度碎碎念<br>sm0nk原创，原文首发t00ls，<a href="https://www.t00ls.net/thread-35614-1-1.html" target="_blank" rel="external">https://www.t00ls.net/thread-35614-1-1.html</a></p>
+<ol>
+<li><p>概要说明<br>白盒审计固然重要，黑盒渗透是*帽子经常的工作or研究对象。<br>本帖从功能点维度去分析，在前/后台看到什么样的功能时，我们就应该想到可能什么漏洞，有了这个规则+已有POC&amp;EXP的积累，就可多维度建模关联分析，写漏扫、写自动化等<br>建立已有经验的基础，不足之处欢迎各大牛指正，同时也欢迎补充，也好进一步完善。<br><img src="totalrev.png" alt=""></p>
+</li>
+<li><p>功能点维度-前台<br>随着安全的强化，现在安全如下规律<br>1). 大站基本都有安全措施，中小站也会有对应的安全措施。如果沿用教科书上的漏扫（AWVS Nessus）挖洞 ;即使长的帅也得考虑是否让父母给买个媳妇。<br>2). 信息泄漏成为重灾区，比如空间引擎的信息、弱文件/测试文件（跟程序员比细心）、代码托管的泄漏等等，前期的信息收集的多少决定后续渗透的深度和广度<br>3). 使用框架的安全性，已有插件的漏洞（乌云搜一下）、新爆漏洞的应急（比如又出来S2）<br>4). 口令问题，虽然看上去很弱智，但试想一个大企业，统一去更改个123456 从各协议各用户各应用等角度，还真不是说句话就能搞定。我们平常搞个注入，如果加密的那段密文cmd查不出，又有几个真花大力气破解？仍归类到弱口令<br>5). 系统补丁问题，貌似不是提权的漏洞不是好漏洞，提权仍基于系统漏洞。<br>6). 关于编程语言特性，PHP就找开源程序&amp;敏感函数及类似处理，java的一些框架都比较成熟了，比如hibernate，如果配置拼接没啥问题找个注入太难，但针对java 越权类的漏洞比较多。<br> PS1：虽然都说PHP是世界最好的语言，但大企业中，还是用jsp+oracle 比较多， 因为jsp类中间件有维保啊，很难像facebook这公司对php搞的特别透，快速响应任何问题。（猪猪侠的SSRF说一个影响有钱人的漏洞就是weblogic 的案例比较多）<br> PS2：跟程序员和运维人员拼的是耐心和细心，当然运气也是实力的一部分</p>
+</li>
+<li><p>功能点维度-后台<br>关于后台，规律如下：<br>1). 注册登录一直研究的关键点，因为有个登录体系是灵魂，曾几度，公司专门设置认证登录体系岗位，详情参考招聘网站；<br>2). 逻辑安全尤为重要，毕竟扫描器不好来实现，比如1元购、订单篡改、羊毛党等等，后续研究自动化的重要趋势；<br>3). 上传功能超级敏感，webshell 大多跟上传有关，甚至大多跟后台上传功能有关<br><img src="part1.png" alt=""><br><img src="part2.png" alt=""></p>
+</li>
+</ol>
 
       
     </div>
