@@ -3,26 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>朝花夕拾 | sm0nk&#39;s blog</title>
+  <title>逻辑漏洞归纳总结 | sm0nk&#39;s blog</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客，朝花夕拾。索引链接。新浪博客：http://blog.sina.com.cn/shellr00tCnblogs：http://www.cnblogs.com/shellr00t">
-<meta name="keywords" content="blog">
+  <meta name="description" content="Web安全渗透方向，三大核心：输入输出、登录体系、权限认证。典型的web漏洞：注入、跨站、上传、代码执行等属于输入输出这个层级，这也是OWASP早期比较侧重的；近年来，像越权漏洞、逻辑绕过、接口安全等逐渐增多，这些属于登录体系和权限认证这个层级。 业务逻辑漏洞主要包括以下分类：1.登录体系安全2.业务一致性3.业务数据篡改4.密码找回5.验证码突破6.会话权限7.数据重放8.接口安全">
+<meta name="keywords" content="业务逻辑">
 <meta property="og:type" content="article">
-<meta property="og:title" content="朝花夕拾">
-<meta property="og:url" content="http://yoursite.com/2017/09/17/朝花夕拾/index.html">
+<meta property="og:title" content="逻辑漏洞归纳总结">
+<meta property="og:url" content="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/index.html">
 <meta property="og:site_name" content="sm0nk&#39;s blog">
-<meta property="og:description" content="个人博客，朝花夕拾。索引链接。新浪博客：http://blog.sina.com.cn/shellr00tCnblogs：http://www.cnblogs.com/shellr00t">
-<meta property="og:image" content="http://yoursite.com/2017/09/17/朝花夕拾/sinablog.png">
-<meta property="og:image" content="http://yoursite.com/2017/09/17/朝花夕拾/cnblogs.png">
-<meta property="og:updated_time" content="2017-09-17T03:45:20.027Z">
+<meta property="og:description" content="Web安全渗透方向，三大核心：输入输出、登录体系、权限认证。典型的web漏洞：注入、跨站、上传、代码执行等属于输入输出这个层级，这也是OWASP早期比较侧重的；近年来，像越权漏洞、逻辑绕过、接口安全等逐渐增多，这些属于登录体系和权限认证这个层级。 业务逻辑漏洞主要包括以下分类：1.登录体系安全2.业务一致性3.业务数据篡改4.密码找回5.验证码突破6.会话权限7.数据重放8.接口安全">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/logicVuls.png">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/apiSec.png">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/PaySec.png">
+<meta property="og:updated_time" content="2017-10-18T06:16:18.105Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="朝花夕拾">
-<meta name="twitter:description" content="个人博客，朝花夕拾。索引链接。新浪博客：http://blog.sina.com.cn/shellr00tCnblogs：http://www.cnblogs.com/shellr00t">
-<meta name="twitter:image" content="http://yoursite.com/2017/09/17/朝花夕拾/sinablog.png">
+<meta name="twitter:title" content="逻辑漏洞归纳总结">
+<meta name="twitter:description" content="Web安全渗透方向，三大核心：输入输出、登录体系、权限认证。典型的web漏洞：注入、跨站、上传、代码执行等属于输入输出这个层级，这也是OWASP早期比较侧重的；近年来，像越权漏洞、逻辑绕过、接口安全等逐渐增多，这些属于登录体系和权限认证这个层级。 业务逻辑漏洞主要包括以下分类：1.登录体系安全2.业务一致性3.业务数据篡改4.密码找回5.验证码突破6.会话权限7.数据重放8.接口安全">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/logicVuls.png">
   
     <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
   
@@ -102,7 +103,7 @@
 				        
 							<li><a href="/categories/编程之道/">编程之道</a></li>
 				        
-							<li><a href="/categories/编程之道/">精品阅读</a></li>
+							<li><a href="/categories/归纳总结/">归纳总结</a></li>
 				        
 						</ul>
 					</nav>
@@ -120,7 +121,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/应急/" style="font-size: 10px;">应急</a>
+						<a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/业务逻辑/" style="font-size: 10px;">业务逻辑</a> <a href="/tags/代理转发/" style="font-size: 10px;">代理转发</a> <a href="/tags/应急/" style="font-size: 10px;">应急</a>
 					</div>
 				</section>
 				
@@ -163,7 +164,7 @@
 		        
 					<li><a href="/categories/编程之道/">编程之道</a></li>
 		        
-					<li><a href="/categories/编程之道/">精品阅读</a></li>
+					<li><a href="/categories/归纳总结/">归纳总结</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -180,11 +181,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-朝花夕拾" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-逻辑漏洞归纳总结" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/17/朝花夕拾/" class="article-date">
-  	<time datetime="2017-09-17T03:36:29.000Z" itemprop="datePublished">2017-09-17</time>
+      <a href="/2017/10/18/逻辑漏洞归纳总结/" class="article-date">
+  	<time datetime="2017-10-18T03:23:09.000Z" itemprop="datePublished">2017-10-18</time>
 </a>
     </div>
   
@@ -197,7 +198,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      朝花夕拾
+      逻辑漏洞归纳总结
       
     </h1>
   
@@ -207,12 +208,12 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/业务逻辑/">业务逻辑</a></li></ul>
 	</div>
 
         
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/归纳总结/">归纳总结</a>
+	<a class="article-category-link" href="/categories/渗透测试/">渗透测试</a>
 	</div>
 
 
@@ -223,9 +224,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>个人博客，朝花夕拾。<br>索引链接。<br>新浪博客：<a href="http://blog.sina.com.cn/shellr00t" target="_blank" rel="external">http://blog.sina.com.cn/shellr00t</a><br>Cnblogs：<a href="http://www.cnblogs.com/shellr00t" target="_blank" rel="external">http://www.cnblogs.com/shellr00t</a><br><a id="more"></a></p>
-<p>新浪博客主要博文分类<br>Web安全<br>渗透攻防<br>安全开发<br>数据仓库<br>操作系统<br>网络知识<br>移动安全<br>建模分析<br>项目管理<br>金庸赏析<br>精品阅读<br>扫地打杂<br>喝点鸡汤<br>专业扯淡<br><img src="sinablog.png" alt=""></p>
-<p>Cnblogs博客博文分类<br>SQL注入<br>代码审计<br>归纳总结<br>脚本开发<br>精品阅读<br>漏洞总结<br>神兵利器<br>渗透测试<br><img src="cnblogs.png" alt=""></p>
+        <p>Web安全渗透方向，三大核心：输入输出、登录体系、权限认证。<br>典型的web漏洞：注入、跨站、上传、代码执行等属于输入输出这个层级，这也是OWASP早期比较侧重的；近年来，像越权漏洞、逻辑绕过、接口安全等逐渐增多，这些属于登录体系和权限认证这个层级。</p>
+<p>业务逻辑漏洞主要包括以下分类：<br>1.登录体系安全<br>2.业务一致性<br>3.业务数据篡改<br>4.密码找回<br>5.验证码突破<br>6.会话权限<br>7.数据重放<br>8.接口安全</p>
+<a id="more"></a>
+<p><img src="logicVuls.png" alt=""><br><img src="apiSec.png" alt=""><br><img src="PaySec.png" alt=""></p>
+<p>漏洞细节详情请跳转<a href="http://blog.sina.com.cn/s/blog_d7058b150102vpaw.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_d7058b150102vpaw.html</a><br>时隔多年，逻辑漏洞也该更新利用姿势了…</p>
+<p>sm0nk 原创文章，原文发布在drops.wooyun.org/web/6917（致我们已逝去的乌云）</p>
 
       
     </div>
@@ -236,8 +240,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2017/09/12/S2-052漏洞分析与验证/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">S2-052漏洞分析与验证</div>
+    <a href="/2017/10/18/代理转发工具汇总分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">代理转发工具汇总分析</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -247,7 +251,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="朝花夕拾" data-title="朝花夕拾" data-url="http://yoursite.com/2017/09/17/朝花夕拾/"  data-images="/img/kongfu.gif" data-content="朝花夕拾">
+<div class="ds-share share" data-thread-key="逻辑漏洞归纳总结" data-title="逻辑漏洞归纳总结" data-url="http://yoursite.com/2017/10/18/逻辑漏洞归纳总结/"  data-images="/img/kongfu.gif" data-content="逻辑漏洞归纳总结">
     <div class="ds-share-inline">
       <ul  class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
