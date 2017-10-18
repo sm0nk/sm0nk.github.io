@@ -3,26 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>代理转发工具汇总分析 | sm0nk&#39;s blog</title>
+  <title>工控安全入门分析 | sm0nk&#39;s blog</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="序 关于代理的说明 关于多个代理转发工具的使用心得 解释下Web代理的原理和重要性 其他工具的一些使用方法概要 附录-参考资料">
-<meta name="keywords" content="代理转发">
+  <meta name="description" content="专业术语 协议端口及探测脚本2.1 协议科普2.2 信息探测 Ethernet/IP 44818 Modbus 502 IEC 61870-5-101/104 2404 Siemens S7 102 Tridium Niagara Fox 1911">
+<meta name="keywords" content="工控安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代理转发工具汇总分析">
-<meta property="og:url" content="http://yoursite.com/2017/10/18/代理转发工具汇总分析/index.html">
+<meta property="og:title" content="工控安全入门分析">
+<meta property="og:url" content="http://yoursite.com/2017/10/18/工控安全入门分析/index.html">
 <meta property="og:site_name" content="sm0nk&#39;s blog">
-<meta property="og:description" content="序 关于代理的说明 关于多个代理转发工具的使用心得 解释下Web代理的原理和重要性 其他工具的一些使用方法概要 附录-参考资料">
-<meta property="og:image" content="http://yoursite.com/2017/10/18/代理转发工具汇总分析/totalrev.png">
-<meta property="og:image" content="http://yoursite.com/2017/10/18/代理转发工具汇总分析/detail.png">
-<meta property="og:updated_time" content="2017-10-18T02:23:53.926Z">
+<meta property="og:description" content="专业术语 协议端口及探测脚本2.1 协议科普2.2 信息探测 Ethernet/IP 44818 Modbus 502 IEC 61870-5-101/104 2404 Siemens S7 102 Tridium Niagara Fox 1911">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/工控安全入门分析/infoCollect.png">
+<meta property="og:updated_time" content="2017-10-18T14:15:37.298Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="代理转发工具汇总分析">
-<meta name="twitter:description" content="序 关于代理的说明 关于多个代理转发工具的使用心得 解释下Web代理的原理和重要性 其他工具的一些使用方法概要 附录-参考资料">
-<meta name="twitter:image" content="http://yoursite.com/2017/10/18/代理转发工具汇总分析/totalrev.png">
+<meta name="twitter:title" content="工控安全入门分析">
+<meta name="twitter:description" content="专业术语 协议端口及探测脚本2.1 协议科普2.2 信息探测 Ethernet/IP 44818 Modbus 502 IEC 61870-5-101/104 2404 Siemens S7 102 Tridium Niagara Fox 1911">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/18/工控安全入门分析/infoCollect.png">
   
     <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
   
@@ -180,11 +179,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-代理转发工具汇总分析" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-工控安全入门分析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/10/18/代理转发工具汇总分析/" class="article-date">
-  	<time datetime="2017-10-18T02:10:39.000Z" itemprop="datePublished">2017-10-18</time>
+      <a href="/2017/10/18/工控安全入门分析/" class="article-date">
+  	<time datetime="2017-10-18T14:03:26.000Z" itemprop="datePublished">2017-10-18</time>
 </a>
     </div>
   
@@ -197,7 +196,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      代理转发工具汇总分析
+      工控安全入门分析
       
     </h1>
   
@@ -207,7 +206,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代理转发/">代理转发</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工控安全/">工控安全</a></li></ul>
 	</div>
 
         
@@ -224,17 +223,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <ol>
-<li>序</li>
-<li>关于代理的说明</li>
-<li>关于多个代理转发工具的使用心得</li>
-<li>解释下Web代理的原理和重要性</li>
-<li>其他工具的一些使用方法概要</li>
-<li>附录-参考资料<a id="more"></a>
+<li>专业术语</li>
+<li><p>协议端口及探测脚本<br>2.1 协议科普<br>2.2 信息探测<br> Ethernet/IP 44818<br> Modbus 502<br> IEC 61870-5-101/104 2404<br> Siemens S7 102<br> Tridium Niagara Fox 1911</p>
+<a id="more"></a>
+<p><img src="infoCollect.png" alt=""><br>2.3 脚本资源<br> Github测试脚本<br> <a href="https://github.com/atimorin/scada-tools" target="_blank" rel="external">https://github.com/atimorin/scada-tools</a><br> <a href="https://github.com/atimorin/PoC2013" target="_blank" rel="external">https://github.com/atimorin/PoC2013</a><br> <a href="https://github.com/drainware/scada-tools" target="_blank" rel="external">https://github.com/drainware/scada-tools</a><br> <a href="https://github.com/drainware/nmap-scada" target="_blank" rel="external">https://github.com/drainware/nmap-scada</a><br> Exploit-db测试脚本<br> <a href="https://www.exploit-db.com/exploits/19833/" target="_blank" rel="external">https://www.exploit-db.com/exploits/19833/</a><br> <a href="https://www.exploit-db.com/exploits/19832/" target="_blank" rel="external">https://www.exploit-db.com/exploits/19832/</a><br> <a href="https://www.exploit-db.com/exploits/19831/" target="_blank" rel="external">https://www.exploit-db.com/exploits/19831/</a><br> <a href="https://www.exploit-db.com/search/?action=search&amp;description=scada&amp;e_author=" target="_blank" rel="external">https://www.exploit-db.com/search/?action=search&amp;description=scada&amp;e_author=</a></p>
+</li>
+<li><p>乌云工控漏洞分析<br>3.1 工控相关漏洞分析<br>3.2 工控精华漏洞分析</p>
+</li>
+<li><p>参考资源<br>4.1 工控专题<br>4.2 牛人分享<br>4.3 其他参考</p>
 </li>
 </ol>
-<p><img src="totalrev.png" alt=""><br><img src="detail.png" alt=""></p>
-<p>篇幅有限，细节原文请查看 <a href="http://www.cnblogs.com/shellr00t/p/5856361.html" target="_blank" rel="external">http://www.cnblogs.com/shellr00t/p/5856361.html</a></p>
-<p>sm0nk 原创文章，首发t00ls，且设置为精华<br><a href="https://www.t00ls.net/thread-35614-1-1.html" target="_blank" rel="external">https://www.t00ls.net/thread-35614-1-1.html</a></p>
+<p>原文详细内容请参考 <a href="http://www.cnblogs.com/shellr00t/p/7687700.html" target="_blank" rel="external">http://www.cnblogs.com/shellr00t/p/7687700.html</a></p>
+<p>sm0nk原创文章，之前发在了乌云，后来乌云消失了。所以在此归档下<br>原乌云链接：<a href="http://drops.wooyun.org/tips/8594" target="_blank" rel="external">http://drops.wooyun.org/tips/8594</a> （致我们已失去的乌云…）</p>
 
       
     </div>
@@ -244,18 +244,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/10/18/逻辑漏洞归纳总结/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          逻辑漏洞归纳总结
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/09/12/S2-052漏洞分析与验证/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">S2-052漏洞分析与验证</div>
+    <a href="/2017/10/18/逻辑漏洞归纳总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">逻辑漏洞归纳总结</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -265,7 +256,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="代理转发工具汇总分析" data-title="代理转发工具汇总分析" data-url="http://yoursite.com/2017/10/18/代理转发工具汇总分析/"  data-images="/img/kongfu.gif" data-content="代理转发工具汇总分析">
+<div class="ds-share share" data-thread-key="工控安全入门分析" data-title="工控安全入门分析" data-url="http://yoursite.com/2017/10/18/工控安全入门分析/"  data-images="/img/kongfu.gif" data-content="工控安全入门分析">
     <div class="ds-share-inline">
       <ul  class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
