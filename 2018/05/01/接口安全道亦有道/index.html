@@ -43,7 +43,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/05/01/接口安全道亦有道/apiDetect4.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/01/接口安全道亦有道/juhe.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/01/接口安全道亦有道/juhe2.png">
-<meta property="og:updated_time" content="2018-05-30T12:20:55.761Z">
+<meta property="og:updated_time" content="2018-05-31T00:20:44.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="接口安全道亦有道">
 <meta name="twitter:description" content="xKungfoo是XCon组委会与北京未来安全信息技术有限公司共同主办的只属于中国人自己的技术交流大会。会议将聚焦当今热点话题，专注于网络安全领域中最新的研究成果和信息交互。xKungfoo的会议精神是为推动中国网络安全技术、攻防技术水平的发展，不断找寻创新想法、经验、解决方案。2018年，xKungfoo将首次在杭州举办！ x功夫峰会，我分享了关于接口安全的议题，在此我以文字版的形式分享下。">
@@ -263,8 +263,6 @@
 <h1 id="0x02-什么是接口？"><a href="#0x02-什么是接口？" class="headerlink" title="0x02 什么是接口？"></a>0x02 什么是接口？</h1><p>​    正常的知识逻辑，都要有定义。但传统的开发意义的接口又不足以作为研究的对象，所以梳理了两种类型：</p>
 <ol>
 <li>核心关键资源，凡是资源的调用（CRUD）都与接口有关系</li>
-</ol>
-<ol>
 <li>凡是不是直接连接，需要“桥梁”过渡，均需要接口的辅助</li>
 </ol>
 <h1 id="0x03-接口有哪些分类？"><a href="#0x03-接口有哪些分类？" class="headerlink" title="0x03 接口有哪些分类？"></a>0x03 接口有哪些分类？</h1><p>​       按照功能来讲接口类型比较多，并且有对应的漏洞，比如登录接口、支付接口、数据接口等；按照技术来讲其实主要是SOAP、REST、RPC。但归纳到数据形态主要还是XML和JSON。</p>
@@ -276,12 +274,8 @@
 <p><strong>Webservice之SOAP SQL注入案例</strong></p>
 <p>WebService的三要素是： </p>
 <ol>
-<li>SOAP (Simple Object AccessProtocol)：简易对象访问协议，soap用来描述传递信息的格式。 </li>
-</ol>
-<ol>
+<li>SOAP (Simple Object AccessProtocol)：简易对象访问协议，soap用来描述传递信息的格式。</li>
 <li>WSDL (WebServices DescriptionLanguage)：Web服务描述语言，用来描述如何访问具体的接口。 </li>
-</ol>
-<ol>
 <li>UDDI (Universal DescriptionDiscovery and Integration)：通用描述、发现及整合，用来管理、分发、查询webService。</li>
 </ol>
 <p>在web URL中经常会看到关于这种写法的WebService.asmx?wsdl接口存在，此时就需要留意有无对应漏洞了。</p>
@@ -337,33 +331,17 @@
 <p><strong>漏洞演化规律：</strong></p>
 <ol>
 <li>漏洞的场景化，一定是结合实际业务（应用业务、营销活动、具体厂家）</li>
-</ol>
-<ol>
 <li>漏洞的行业化，比如金融证券行业的打法</li>
-</ol>
-<ol>
 <li>漏洞的利益化，BTC勒索</li>
-</ol>
-<ol>
 <li>漏洞的关联化，单独一个漏洞点影响有限，递归迭代关联后的影响不可估</li>
 </ol>
 <p><strong>漏洞挖掘道与术</strong></p>
 <ol>
 <li>博弈对手升级</li>
-</ol>
-<ol>
 <li>知识集合储备</li>
-</ol>
-<ol>
 <li>漏洞本质原理</li>
-</ol>
-<ol>
 <li>逻辑流程演变</li>
-</ol>
-<ol>
 <li>利用形式组合</li>
-</ol>
-<ol>
 <li>结果奇点临近（道VS术）</li>
 </ol>
 <p>在安全技术中，例如二进制更侧重道，Web安全方向更侧重术，随着对抗技术的发展，大多有意义漏洞都会是组合拳趋势，既考虑道又要考虑术，二者找一个结合点。</p>
