@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>应急分析信息收集linux | sm0nk&#39;s blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前写过一篇《黑客入侵应急分析手工排查》，为了提升排查效率，部分是能够实现自动化的。比如linux的基础信息收集、web日志和系统日志的自动化分析。这次就把之前的命令统一收集起来。本来打算用python写的，发现还是linux默认集成的shell会好一些（对于基础信息收集）">
+<meta name="keywords" content="应急">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应急分析信息收集linux">
+<meta property="og:url" content="http://yoursite.com/2018/09/30/应急分析信息收集linux/index.html">
+<meta property="og:site_name" content="sm0nk&#39;s blog">
+<meta property="og:description" content="之前写过一篇《黑客入侵应急分析手工排查》，为了提升排查效率，部分是能够实现自动化的。比如linux的基础信息收集、web日志和系统日志的自动化分析。这次就把之前的命令统一收集起来。本来打算用python写的，发现还是linux默认集成的shell会好一些（对于基础信息收集）">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-16T10:46:14.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="应急分析信息收集linux">
+<meta name="twitter:description" content="之前写过一篇《黑客入侵应急分析手工排查》，为了提升排查效率，部分是能够实现自动化的。比如linux的基础信息收集、web日志和系统日志的自动化分析。这次就把之前的命令统一收集起来。本来打算用python写的，发现还是linux默认集成的shell会好一些（对于基础信息收集）">
+  
+    <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://p6.sinaimg.cn/3607464725/180/71341468803657">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">sm0nk</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+				        
+							<li><a href="/categories/编程之道/">编程之道</a></li>
+				        
+							<li><a href="/categories/归纳总结/">归纳总结</a></li>
+				        
+							<li><a href="/categories/认知独省/">认知独省</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/SQL注入/" style="font-size: 10px;">SQL注入</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/seleinum/" style="font-size: 10px;">seleinum</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/业务逻辑/" style="font-size: 10px;">业务逻辑</a> <a href="/tags/代理转发/" style="font-size: 10px;">代理转发</a> <a href="/tags/工控安全/" style="font-size: 10px;">工控安全</a> <a href="/tags/应急/" style="font-size: 20px;">应急</a> <a href="/tags/接口安全/" style="font-size: 10px;">接口安全</a> <a href="/tags/渗透/" style="font-size: 10px;">渗透</a> <a href="/tags/爆破/" style="font-size: 10px;">爆破</a> <a href="/tags/语言安全/" style="font-size: 10px;">语言安全</a> <a href="/tags/远程下载/" style="font-size: 10px;">远程下载</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">sm0nk</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">sm0nk</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+		        
+					<li><a href="/categories/编程之道/">编程之道</a></li>
+		        
+					<li><a href="/categories/归纳总结/">归纳总结</a></li>
+		        
+					<li><a href="/categories/认知独省/">认知独省</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-应急分析信息收集linux" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/30/应急分析信息收集linux/" class="article-date">
+  	<time datetime="2018-09-30T15:15:43.000Z" itemprop="datePublished">2018-09-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      应急分析信息收集linux
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/应急/">应急</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/攻防渗透/">攻防渗透</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前写过一篇<a href="https://www.cnblogs.com/shellr00t/p/6943796.html" target="_blank" rel="noopener">《黑客入侵应急分析手工排查》</a>，为了提升排查效率，部分是能够实现自动化的。比如linux的基础信息收集、web日志和系统日志的自动化分析。<br>这次就把之前的命令统一收集起来。本来打算用python写的，发现还是linux默认集成的shell会好一些（对于基础信息收集）<br><a id="more"></a></p>
+<p>这个bash脚本可以后续应急分析排查时做信息收集使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># by sm0nk</span></span><br><span class="line"><span class="comment"># usage: bash securityCheck.sh &gt;&gt; all.txt &amp;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"start......"</span> `date`</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"basicFile security check"</span></span><br><span class="line">ls -alt /tmp/</span><br><span class="line">ls -alt /etc/init.d/</span><br><span class="line">find ./ -mtime 0 -name <span class="string">"*.jsp"</span></span><br><span class="line">find  /   -perm 4777</span><br><span class="line">netstat -anp</span><br><span class="line">ps -aux</span><br><span class="line">ls -alt /usr/bin   | head -10</span><br><span class="line">ls -alt /usr/sbin   | head -10</span><br><span class="line">ls -alt /sbin   | head -10</span><br><span class="line"><span class="built_in">stat</span> /usr/bin/ls /usr/bin/netstat </span><br><span class="line"><span class="built_in">stat</span> /bin/ls /bin/netstat </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"sysinfo secuity check"</span></span><br><span class="line"><span class="built_in">history</span></span><br><span class="line"><span class="built_in">history</span> | grep wget </span><br><span class="line"><span class="built_in">history</span> | grep ssh</span><br><span class="line">cat /root/.bash_history</span><br><span class="line">crontab -l</span><br><span class="line">ls /etc/cron*</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">ls -alt /etc/init.d/</span><br><span class="line">cat /etc/init.d/rc.local</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"user info select"</span></span><br><span class="line">cat /etc/passwd</span><br><span class="line">awk -F: <span class="string">'&#123;if($3==0)print $1&#125;'</span> /etc/passwd</span><br><span class="line">cat /etc/passwd  | grep -E <span class="string">"/bin/bash$"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"log info check"</span></span><br><span class="line">last</span><br><span class="line">lastlog</span><br><span class="line">lastb</span><br><span class="line">who</span><br><span class="line">w</span><br><span class="line"><span class="comment"># cat /var/log/auth.log</span></span><br><span class="line"><span class="comment"># cat /var/log/auth.log | egrep '[1-9]&#123;1,3&#125;\.[1-9]&#123;1,3&#125;\.'</span></span><br><span class="line"><span class="comment"># cd  /var/log/ &amp;&amp; cat message auth.log userlog cron secure faillog</span></span><br><span class="line"><span class="built_in">cd</span>  /var/<span class="built_in">log</span> &amp;&amp; strings wtmp btmp faillog lastlog  &gt;&gt; /tmp/linuxsys.log</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"login failed IP......"</span></span><br><span class="line">grep <span class="string">"Failed password"</span> /var/<span class="built_in">log</span>/auth.log | awk <span class="string">'&#123;print $13&#125;'</span> | sort | uniq -c | sort -nr | more</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"login success IP......"</span></span><br><span class="line">grep <span class="string">"Accepted"</span> /var/<span class="built_in">log</span>/auth.log | awk <span class="string">'&#123;print $11&#125;'</span> | sort | uniq -c | sort -nr | more </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"file packet"</span></span><br><span class="line">tar zcPf /tmp/apacheAccess.tar.gz /var/<span class="built_in">log</span>/apache2/access.log</span><br><span class="line">tar zxPf /tmp/nginxAccess.tar.gz /var/<span class="built_in">log</span>/nginx/access.log</span><br><span class="line">tar zcPf /tmp/varALL.tar.gz /var/<span class="built_in">log</span>/</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"end......"</span> `date`</span><br></pre></td></tr></table></figure>
+<p>本来打算是用python写的,奈何subprocess处理 多参数时,代码略显臃肿.但这个模块还是比较值得推荐的.</p>
+<p>例如批量检测c段存活</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> thread</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen,PIPE</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ping_check</span><span class="params">(ip)</span>:</span></span><br><span class="line">	check = Popen([<span class="string">'/bin/bash'</span>,<span class="string">'-c'</span>,<span class="string">'ping -c 2 '</span>+ip],stdin=PIPE,stdout=PIPE)</span><br><span class="line">	data = check.stdout.read()</span><br><span class="line">	<span class="keyword">if</span> <span class="string">'ttl'</span> <span class="keyword">in</span> data : </span><br><span class="line">		<span class="keyword">print</span> <span class="string">'%s is up'</span>%ip</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">255</span>):</span><br><span class="line">		ip = <span class="string">'192.168.0.'</span>+str(i)</span><br><span class="line">		thread.start_new_thread(ping_check,(ip,)) <span class="comment">#2.8s</span></span><br><span class="line">		<span class="comment"># ping_check(ip)</span></span><br><span class="line">		time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	main()</span><br></pre></td></tr></table></figure>
+<p>写了一部分的python linux信息收集，虽然改用了bash，但subprocess的用法记录下。</p>
+<ol>
+<li><p>subprocess.check_output ，几个执行命令的参数中例如run call Popen 应该是即写即执行，这个check_output 可以将执行结果存入到变量。但又一个问题有困扰，假如cat /var/log/message 应该是会增加机器的内存开销的…</p>
+</li>
+<li><p>shell=True 用法，可以直接用单引号包裹后，引入系统命令，假如不使用shell=True 需要传入列表形式的命令，例如find  /Users/sm0nk/Downloads -name “find*.txt”，太长了需要使用shlex.split 分割成单点列表</p>
+</li>
+<li><p>管道类多重命令交互，需要两次定义</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ip1 = Popen(<span class="string">'ifconfig'</span>,stdout=PIPE)</span><br><span class="line">ip2 = Popen(<span class="string">'grep 192.168.'</span>,stdin=ip1.stdout,stdout=PIPE,shell=True)</span><br><span class="line">out,err = ip2.communicate()</span><br><span class="line"><span class="built_in">print</span> out</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>搜索学习过程，发现cnblog 有个作者写的python的博客，可谓研究者心态。顺便贴个链接。</p>
+</li>
+</ol>
+<p><a href="https://www.cnblogs.com/yyds/p/7288916.html" target="_blank" rel="noopener">Python之系统交互(subprocess)</a></p>
+<p><a href="http://www.cnblogs.com/yyds/" target="_blank" rel="noopener">云游道士</a></p>
+<hr>
+<p>用python写的信息收集半成品，留作备忘。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="comment"># emergencySecurity_linux.py</span></span><br><span class="line"><span class="comment"># by sm0nk</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess,shlex</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen,PIPE </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">basicFileAnalysis</span><span class="params">()</span>:</span></span><br><span class="line">	os.chdir(<span class="string">'/tmp'</span>)</span><br><span class="line">	tmplist = subprocess.check_output([<span class="string">'ls -al'</span>],shell=<span class="keyword">True</span>)</span><br><span class="line">	<span class="keyword">print</span> tmplist</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		os.chdir(<span class="string">'/etc/init.d/'</span>)</span><br><span class="line">		onstart = subprocess.check_output([<span class="string">'ls -al '</span>],shell=<span class="keyword">True</span>)</span><br><span class="line">		<span class="keyword">print</span> onstart</span><br><span class="line">	<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> e</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 例如要查找24小时内被修改的JSP文件,www目录为核心，操作频繁的目录也需要检查；</span></span><br><span class="line">	<span class="comment"># mtime 相对靠谱，linux 没有创建时间</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		<span class="comment"># os.system("find /var/www -mtime 0 ")</span></span><br><span class="line">		<span class="comment"># os.system("find /private/tmp -mtime 0")</span></span><br><span class="line">		find_cmd = shlex.split(<span class="string">'find /tmp -mtime 0'</span>)</span><br><span class="line">		p1 = subprocess.check_output(find_cmd)</span><br><span class="line">		<span class="comment"># p1 = subprocess.check_output('find  /Users/sm0nk/Downloads -name \'find*.txt\'',shell=True)</span></span><br><span class="line">		<span class="keyword">print</span> p1</span><br><span class="line">		<span class="comment"># ip1 = Popen('ifconfig',stdout=PIPE)</span></span><br><span class="line">		<span class="comment"># ip2 = Popen('grep 192.168',stdin=ip1.stdout,stdout=PIPE,shell=True)</span></span><br><span class="line">		<span class="comment"># out,err = ip2.communicate()</span></span><br><span class="line">		<span class="comment"># print out</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># 查找指定目录大权限文件，/tmp  /var/www等目录</span></span><br><span class="line">		permlist =  subprocess.check_output(<span class="string">'find /tmp -perm 777'</span>,shell=<span class="keyword">True</span>)  </span><br><span class="line">		<span class="keyword">print</span> permlist </span><br><span class="line">	<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># basicFileAnalysis()</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">processConn</span><span class="params">()</span>:</span> </span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		processlist = subprocess.check_output(<span class="string">'ps -aux'</span>,shell=<span class="keyword">True</span>)  </span><br><span class="line">		<span class="keyword">print</span> <span class="string">"########## cmd: ps -aux ##########\n"</span>+ processlist</span><br><span class="line">		netconn = subprocess.check_output(<span class="string">'netstat -anp'</span>,shell=<span class="keyword">True</span>)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"########## cmd: netstat -anp ##########\n"</span> + netconn</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># processConn()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cmdAnalysis</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		<span class="comment"># 查看命令目录最近的时间排序</span></span><br><span class="line">		bincmd1 = subprocess.Popen(<span class="string">'ls -alt /usr/bin '</span>,stdout=PIPE,shell=<span class="keyword">True</span>)</span><br><span class="line">		bincmd2 = subprocess.Popen(<span class="string">'head -10'</span>,stdin=bincmd1.stdout,stdout=PIPE,shell=<span class="keyword">True</span>)</span><br><span class="line">		out,err = bincmd2.communicate()</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"########## cmd: ls -alt /usr/bin   | head -10 ##########\n"</span>,out</span><br><span class="line">		bincmd3 = subprocess.Popen(<span class="string">'ls -alt /usr/sbin '</span>,stdout=PIPE,shell=<span class="keyword">True</span>)</span><br><span class="line">		bincmd4 = subprocess.Popen(<span class="string">'head -10'</span>,stdin=bincmd3.stdout,stdout=PIPE,shell=<span class="keyword">True</span>)</span><br><span class="line">		out4,err = bincmd4.communicate()</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"########## cmd: ls -alt /usr/sbin   | head -10 ##########\n"</span>,out4</span><br><span class="line">	<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> e</span><br><span class="line">cmdAnalysis()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/16/红队体系化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          红队体系化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/01/接口安全道亦有道/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">接口安全道亦有道</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 sm0nk
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

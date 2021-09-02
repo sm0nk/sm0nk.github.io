@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>python selenium 初探 | sm0nk&#39;s blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="初探python selenium    做一些WEB相关的自动化处理，模块还是很好用的，之前一直针对某个单一页面进行特征比对判断及测试。使用了selenium后，感觉在自动化角度还有很大的空间。   目前自发主要用途比如免去加密登录的暴力破解；针对多级操作的流程处理等等。当然不仅局限于此。这个过程主要的报错就是XPATH定位时的Unable to locate element（无法定位到元素），">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python selenium 初探">
+<meta property="og:url" content="http://yoursite.com/2017/10/29/python-selenium-初探/index.html">
+<meta property="og:site_name" content="sm0nk&#39;s blog">
+<meta property="og:description" content="初探python selenium    做一些WEB相关的自动化处理，模块还是很好用的，之前一直针对某个单一页面进行特征比对判断及测试。使用了selenium后，感觉在自动化角度还有很大的空间。   目前自发主要用途比如免去加密登录的暴力破解；针对多级操作的流程处理等等。当然不仅局限于此。这个过程主要的报错就是XPATH定位时的Unable to locate element（无法定位到元素），">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-10-31T06:53:50.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python selenium 初探">
+<meta name="twitter:description" content="初探python selenium    做一些WEB相关的自动化处理，模块还是很好用的，之前一直针对某个单一页面进行特征比对判断及测试。使用了selenium后，感觉在自动化角度还有很大的空间。   目前自发主要用途比如免去加密登录的暴力破解；针对多级操作的流程处理等等。当然不仅局限于此。这个过程主要的报错就是XPATH定位时的Unable to locate element（无法定位到元素），">
+  
+    <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://p6.sinaimg.cn/3607464725/180/71341468803657">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">sm0nk</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+				        
+							<li><a href="/categories/编程之道/">编程之道</a></li>
+				        
+							<li><a href="/categories/归纳总结/">归纳总结</a></li>
+				        
+							<li><a href="/categories/认知独省/">认知独省</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/SQL注入/" style="font-size: 10px;">SQL注入</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/seleinum/" style="font-size: 10px;">seleinum</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/业务逻辑/" style="font-size: 10px;">业务逻辑</a> <a href="/tags/代理转发/" style="font-size: 10px;">代理转发</a> <a href="/tags/工控安全/" style="font-size: 10px;">工控安全</a> <a href="/tags/应急/" style="font-size: 20px;">应急</a> <a href="/tags/接口安全/" style="font-size: 10px;">接口安全</a> <a href="/tags/渗透/" style="font-size: 10px;">渗透</a> <a href="/tags/爆破/" style="font-size: 10px;">爆破</a> <a href="/tags/语言安全/" style="font-size: 10px;">语言安全</a> <a href="/tags/远程下载/" style="font-size: 10px;">远程下载</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">sm0nk</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">sm0nk</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+		        
+					<li><a href="/categories/编程之道/">编程之道</a></li>
+		        
+					<li><a href="/categories/归纳总结/">归纳总结</a></li>
+		        
+					<li><a href="/categories/认知独省/">认知独省</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-python-selenium-初探" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/29/python-selenium-初探/" class="article-date">
+  	<time datetime="2017-10-29T13:36:12.000Z" itemprop="datePublished">2017-10-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python selenium 初探
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/编程之道/">编程之道</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>初探python selenium</p>
+<p>   做一些WEB相关的自动化处理，模块还是很好用的，之前一直针对某个单一页面进行特征比对判断及测试。使用了selenium后，感觉在自动化角度还有很大的空间。<br>   目前自发主要用途比如免去加密登录的暴力破解；针对多级操作的流程处理等等。当然不仅局限于此。这个过程主要的报错就是XPATH定位时的Unable to locate element（无法定位到元素），其实主要的原因还是handle句柄的变化，以及部分页面的刷新时间的原因。<br><a id="more"></a></p>
+<p>脚本初探总结如下：</p>
+<p>最初的想法是自动批量提交成百上千的流程。<br>主要逻辑就是：</p>
+<pre><code>1. 访问oa首页，然后把cookie填充
+2. 携cookie，访问待办事宜页面
+3. 针对待办事宜的页面，进行div首元素查找并点击
+4. 针对新页面的提交按钮进行点击
+</code></pre><p>有几个注意点，值得归纳总结</p>
+<pre><code>1. 开启浏览器除了正常的模块引用，还要下载浏览器配对的webdirver，并置于环境变量能够引导的路径
+2. 携带cookie访问，前提是先增加cookie进入，但不能直接访问目的页面。先访问下首页，然后add，然后再访问目的页面
+3. cookie必须得是key value 形式，不能按照常规数据包那种json格式，使用这种格式：cookie ={&apos;name&apos;:&apos;JSESSIONID&apos;,&apos;value&apos;:&apos;aaaZzzItnQOrm_T4ihLZv&apos;}
+4. 若操作行为出现点击，一般会有新的handle，所以要在新页面去查找元素，必须得使用switch（browser.switch_to_window(browser.window_handles[n])）
+5. 由于各个页面的点击，可能加载缓慢，所以保证完全加载后再进行元素查找，所以可以使用time.sleep(2)
+6. 原理上所有的网页元素可以通过xpath来表达，所以chrome可使用F12的审查元素来配套结合
+7. xpath中若存在引号，必须使用\进行转义，否则不能正确引用
+8. 这个过程最多的报错就是Unable to locate element （无法定位元素问题），主要原因只顾于对元素方法的定位，却没有意识到页面发生跳转后的handles的变化
+    1. selenium 默认的handle 就是0 ，所以当点击按钮后出现的是新handle(也可理解为浏览器的新标签)，若在新的标签中取值，必须得切换handle
+    2. 为了循环处理循环体，还得把handle重归位为0（首页句柄），这样才能是新的开始，否则仍然按照新打开的handle去定位老元素，仍然会提示Unable to locate element
+9. 关于浏览器页面和页签，可把开启打开访问置于循环体外面，针对浏览器标签的关闭可使用browser.close() , 针对浏览器整体的关闭可使用browser.quit()
+10. 有几个用法：
+    1. 打印输出当前handle：print browser.current_window_handle
+    2. 打印输出所有handle：print browser.window_handles
+    3. 打印输出当前cookie：print browser.get_cookies()
+    4. 打印输出当前URL   ：print browser.current_url
+</code></pre><p>脚本demo如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">accessFBIOA</span><span class="params">(browser)</span>:</span></span><br><span class="line">    browser.get(<span class="string">'https://oa.fbi.com.cn/'</span>)</span><br><span class="line">    cookie =&#123;<span class="string">'name'</span>:<span class="string">'JSESSIONID'</span>,<span class="string">'value'</span>:<span class="string">'aaaZzzItnQOrm_T4ihLZv'</span>&#125;</span><br><span class="line">    browser.add_cookie(cookie)</span><br><span class="line">    <span class="keyword">print</span> browser.current_window_handle</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'step 1 ok'</span></span><br><span class="line"></span><br><span class="line">    browser.get(<span class="string">"https://oa.FBI.com.cn/vworkflow/workflow/workflowbaselist.jsp?action=searchall&amp;isfinished=0&amp;isnew=1&amp;sqlwhere=operatetype%3E1"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">print</span> browser.current_window_handle</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'step 2 ok'</span></span><br><span class="line"></span><br><span class="line">    browser.find_element_by_xpath(<span class="string">"//*[@id=\"datagrid-row-r1-2-0\"]/td[4]/div/a"</span>).click()</span><br><span class="line">    <span class="keyword">print</span> browser.current_window_handle</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'step 3 ok'</span></span><br><span class="line">    now_url = browser.current_url</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#第四步，定位提交按钮</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        browser.switch_to_window(browser.window_handles[<span class="number">1</span>])</span><br><span class="line">        browser.find_element_by_xpath(<span class="string">"//button[@id='button_F']"</span>).click()</span><br><span class="line">        <span class="comment">#print 'element has located'</span></span><br><span class="line">        <span class="comment">#break</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">'no focus'</span></span><br><span class="line">    <span class="keyword">print</span> browser.current_window_handle</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'step 4 ok'</span></span><br><span class="line">    browser.close()</span><br><span class="line">    <span class="comment">#browser.quit()</span></span><br><span class="line">    <span class="comment">#便于循环初始进行，所以要切换handle</span></span><br><span class="line">    browser.switch_to_window(browser.window_handles[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    browser = webdriver.Chrome()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">3</span>):</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"######Current Process"</span>,str(i),<span class="string">"######"</span></span><br><span class="line">        accessTassOA(browser)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/27/基于Seleinum的口令爆破应用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          基于Seleinum的口令爆破应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/18/SQL注入关联分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SQL注入关联分析</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 sm0nk
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

